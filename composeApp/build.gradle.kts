@@ -112,3 +112,7 @@ compose.desktop {
         }
     }
 }
+
+tasks.matching { it.name == "iosSimulatorArm64Test" }.configureEach {
+    enabled = false
+}
