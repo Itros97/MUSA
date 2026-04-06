@@ -9,7 +9,7 @@ import org.softwareanvil.project.db.composeApp.newInstance
 import org.softwareanvil.project.db.composeApp.schema
 
 public interface MusaDatabase : Transacter {
-  public val comissionQueries: ComissionQueries
+  public val commissionQueries: CommissionQueries
 
   public companion object {
     public val Schema: SqlSchema<QueryResult.Value<Unit>>
