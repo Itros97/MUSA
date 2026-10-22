@@ -26,3 +26,11 @@ compose.desktop {
         }
     }
 }
+
+tasks.register<JavaExec>("runDemo") {
+    group = "application"
+    description = "Runs the desktop app on a throwaway database filled with toy data."
+    mainClass.set("org.softwareanvil.musa.MainKt")
+    classpath = sourceSets["main"].runtimeClasspath
+    systemProperty("musa.demo", "true")
+}

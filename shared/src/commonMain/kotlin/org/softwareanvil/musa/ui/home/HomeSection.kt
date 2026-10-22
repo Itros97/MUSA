@@ -30,7 +30,7 @@ enum class HomeSection(
 		description = "Ferias y mercados: qué llevas, cuánto vendes y cuánto te cuesta ir.",
 		icon = MusaIcons.Event,
 		tone = SectionTone.TERTIARY,
-		isAvailable = false,
+		isAvailable = true,
 	),
 	SALES(
 		title = "Ventas",

@@ -1,7 +1,7 @@
 # Roadmap
 ---
 
-MUSA is built one module at a time. Inventory comes first; the rest follow in roughly this order.
+MUSA is built one module at a time. Inventory and events are done; the rest follow in roughly this order.
 
 ## Version 1, fully local
 
@@ -10,7 +10,7 @@ MUSA is built one module at a time. Inventory comes first; the rest follow in ro
 - [ ] **Accounts**: income and expenses.
 - [ ] **Marketplace**: listings and orders from the places the artist sells.
 - [ ] **Shipping**: parcels and their state.
-- [ ] **Events**: fairs and conventions, with the stock taken to each.
+- [x] **Events**: fairs and markets, with the stock taken, sales, expenses and profit.
 - [ ] **Income tax**: records needed for the yearly tax return.
 
 ## Later

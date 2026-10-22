@@ -37,3 +37,8 @@ class DeleteEventUseCase(private val repository: EventRepository, private val cl
 		return EventResult.Done
 	}
 }
+
+/** Loads one event for editing. */
+class GetEventUseCase(private val repository: EventRepository) {
+	suspend operator fun invoke(id: EventId): Event? = repository.findById(id)
+}

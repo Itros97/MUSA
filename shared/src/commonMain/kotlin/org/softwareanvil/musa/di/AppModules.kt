@@ -7,11 +7,13 @@ import kotlinx.coroutines.IO
 import org.koin.core.context.startKoin
 import org.koin.dsl.KoinAppDeclaration
 import org.koin.dsl.module
+import org.koin.mp.KoinPlatform
 import org.softwareanvil.musa.data.repository.EventRepositoryImpl
 import org.softwareanvil.musa.data.repository.ProductRepositoryImpl
 import org.softwareanvil.musa.data.repository.SaleRepositoryImpl
 import org.softwareanvil.musa.data.repository.TagRepositoryImpl
 import org.softwareanvil.musa.db.MusaDatabase
+import org.softwareanvil.musa.demo.DemoSeeder
 import org.softwareanvil.musa.domain.logic.EventValidator
 import org.softwareanvil.musa.domain.logic.IdGenerator
 import org.softwareanvil.musa.domain.logic.ProductValidator
@@ -28,6 +30,7 @@ import org.softwareanvil.musa.domain.usecase.DeleteEventUseCase
 import org.softwareanvil.musa.domain.usecase.DeleteExpenseUseCase
 import org.softwareanvil.musa.domain.usecase.DeleteProductUseCase
 import org.softwareanvil.musa.domain.usecase.DuplicateProductUseCase
+import org.softwareanvil.musa.domain.usecase.GetEventUseCase
 import org.softwareanvil.musa.domain.usecase.GetProductUseCase
 import org.softwareanvil.musa.domain.usecase.MoveStockToEventUseCase
 import org.softwareanvil.musa.domain.usecase.ObserveEventDetailUseCase
@@ -75,12 +78,21 @@ val domainModule = module {
 	factory { DeleteEventUseCase(get(), get()) }
 	factory { ObserveEventsUseCase(get()) }
 	factory { ObserveEventDetailUseCase(get()) }
+	factory { GetEventUseCase(get()) }
+}
+
+/** Toy data for the demo database. */
+val demoModule = module {
+	factory { DemoSeeder(get(), get(), get(), get(), get(), get(), get(), get()) }
 }
 
 /** Starts dependency injection; platforms pass extra config such as the Android context. */
 fun initKoin(config: KoinAppDeclaration = {}) {
 	startKoin {
 		config()
-		modules(platformModule, dataModule, domainModule, uiModule)
+		modules(platformModule, dataModule, domainModule, uiModule, demoModule)
 	}
 }
+
+/** Fills a fresh demo database with toy data; call once, after [initKoin]. */
+suspend fun seedDemoData() = KoinPlatform.getKoin().get<DemoSeeder>().seed()

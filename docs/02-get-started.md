@@ -14,6 +14,17 @@
 ./gradlew :androidApp:installDebug   # install on a connected Android device or emulator
 ```
 
+## Try it with toy data
+
+```bash
+./gradlew :desktopApp:runDemo        # run the desktop app on a database full of made-up data
+```
+
+The demo uses its own file, `musa-demo.db`, next to the real one. It is deleted and filled again every
+time the demo starts, so you can break things freely. It holds ten products (some low on stock, one sold
+out), an event that closed last month, one happening today and one coming up. Your real `musa.db` is never
+touched.
+
 For iOS, open `iosApp/` in Xcode on a Mac and run it from there.
 
 ## Run the tests
@@ -24,7 +35,7 @@ For iOS, open `iosApp/` in Xcode on a Mac and run it from there.
 
 ## Where the data lives
 
-The database is a single file called `musa.db`. On desktop it is stored in the per-user data folder of each system:
+The database is a single file called `musa.db` (`musa-demo.db` for the demo). On desktop it is stored in the per-user data folder of each system:
 
 | System  | Folder                                        |
 |---------|-----------------------------------------------|

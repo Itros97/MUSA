@@ -13,6 +13,8 @@ The first module is **inventory**. It keeps the artist's catalogue in a local SQ
 - **Tags** with a colour from a fixed palette, used to group and filter the catalogue.
 - **Statuses**: draft, active and archived.
 
+The second module is **events**: fairs and markets where stock is taken from the catalogue, sold on the spot, and summed up into gross, cost, expenses and profit.
+
 ## What it does not do
 
 - It has no server and no account. One device belongs to one artist.
@@ -23,3 +25,4 @@ The first module is **inventory**. It keeps the artist's catalogue in a local SQ
 - [Get started](02-get-started.md) to build and run it.
 - [Architecture](03-architecture.md) to see how the code is laid out.
 - [Inventory](04-inventory.md) for the rules the inventory module follows.
+- [Events](06-events.md) for how stock, sales and profit work at a fair.

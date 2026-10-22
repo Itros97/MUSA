@@ -36,6 +36,7 @@ Requires JDK 17+ and, for Android, the Android SDK. iOS builds need a Mac with X
 
 ```bash
 ./gradlew :desktopApp:run            # run the desktop app
+./gradlew :desktopApp:runDemo        # run the desktop app on a throwaway database with toy data
 ./gradlew :androidApp:installDebug   # install on a connected Android device or emulator
 ./gradlew :shared:jvmTest            # run the shared tests on the JVM
 ```
@@ -52,7 +53,13 @@ The app is built module by module. The first one is **inventory**:
 - Tags with suggestions, search and filters on the product list.
 - Validation of product drafts before saving, and duplication of existing products.
 
-Accounts, marketplace, shipping, events and income-tax records will follow as separate modules.
+The second one is **events**:
+
+- Stock moved from the catalogue to a fair, and back when it closes.
+- Sales recorded on the spot, at the variant price or an edited one, and undone if needed.
+- Expenses, and a summary with gross, cost of goods and profit.
+
+Accounts, marketplace, shipping and income-tax records will follow as separate modules.
 Data stays in a local `.db` file. Ids are UUIDs so that optional sync with a backend can be added later.
 
 ## 🔍 How it works
@@ -73,6 +80,7 @@ only provides its database driver and data directory.
 | [Get started](docs/02-get-started.md) | Build, run and test it, and where the data is stored. |
 | [Architecture](docs/03-architecture.md) | The domain, data and ui layers and how they are wired. |
 | [Inventory](docs/04-inventory.md) | Products, variants, validation rules, filters and duplication. |
+| [Events](docs/06-events.md) | Stock taken to a fair, sales, expenses, profit and closing. |
 | [Roadmap](docs/05-roadmap.md) | The modules still to come and the plan for sync. |
 
 [Read the docs online →](https://itros97.github.io/MUSA/)
