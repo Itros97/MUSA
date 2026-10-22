@@ -49,4 +49,4 @@ An event can only be deleted while it has no sales. Its stock goes back to the c
 
 ## Where sales are stored
 
-Sales go to a table shared by every channel, with the channel set to `EVENT` and a link to the event. The future sales module will read the same table.
+Each sale at the stand is an order of one line, with the channel set to `EVENT` and a link to the event. It is stored with every other sale, so it also shows in the [sales list](07-sales.md), where it can be seen but not undone.

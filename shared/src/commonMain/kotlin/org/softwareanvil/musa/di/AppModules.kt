@@ -4,6 +4,7 @@ import kotlin.time.Clock
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
+import kotlinx.datetime.TimeZone
 import org.koin.core.context.startKoin
 import org.koin.dsl.KoinAppDeclaration
 import org.koin.dsl.module
@@ -65,6 +66,7 @@ val dataModule = module {
 /** Pure logic and use cases. */
 val domainModule = module {
 	single<Clock> { Clock.System }
+	single<TimeZone> { TimeZone.currentSystemDefault() }
 	single<IdGenerator> { UuidGenerator() }
 	single { ProductValidator() }
 	factory { SaveProductUseCase(get(), get(), get(), get(), get()) }
@@ -97,7 +99,7 @@ val domainModule = module {
 
 /** Toy data for the demo database and the development tools. */
 val demoModule = module {
-	factory { DemoSeeder(get(), get(), get(), get(), get(), get(), get(), get()) }
+	factory { DemoSeeder(get(), get(), get(), get(), get(), get(), get(), get(), get()) }
 	factory { FillWithDemoDataUseCase(get(), get()) }
 }
 

@@ -59,6 +59,12 @@ The second one is **events**:
 - Sales recorded on the spot, at the variant price or an edited one, and undone if needed.
 - Expenses, and a summary with gross, cost of goods and profit.
 
+The third one is **sales**:
+
+- Orders from every channel, with several products, customer, note and shipping amounts.
+- Physical stock taken from the catalogue on sale and given back on delete.
+- A list filtered by period and channel, with revenue, cost and margin.
+
 Accounts, marketplace, shipping and income-tax records will follow as separate modules.
 Data stays in a local `.db` file. Ids are UUIDs so that optional sync with a backend can be added later.
 
@@ -81,6 +87,7 @@ only provides its database driver and data directory.
 | [Architecture](docs/03-architecture.md) | The domain, data and ui layers and how they are wired. |
 | [Inventory](docs/04-inventory.md) | Products, variants, validation rules, filters and duplication. |
 | [Events](docs/06-events.md) | Stock taken to a fair, sales, expenses, profit and closing. |
+| [Sales](docs/07-sales.md) | Orders from every channel, shipping, margin and the sales list. |
 | [Roadmap](docs/05-roadmap.md) | The modules still to come and the plan for sync. |
 
 [Read the docs online →](https://itros97.github.io/MUSA/)

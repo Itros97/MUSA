@@ -19,6 +19,8 @@ import org.softwareanvil.musa.ui.home.HomeSection
 import org.softwareanvil.musa.ui.products.edit.EditTarget
 import org.softwareanvil.musa.ui.products.edit.ProductEditScreen
 import org.softwareanvil.musa.ui.products.list.ProductListScreen
+import org.softwareanvil.musa.ui.sales.editor.SaleEditorScreen
+import org.softwareanvil.musa.ui.sales.list.SaleListScreen
 
 private object Routes {
 	const val HOME = "home"
@@ -29,6 +31,8 @@ private object Routes {
 	const val EDIT = "products/{$ARG_ID}"
 	const val EVENTS = "events"
 	const val EVENT = "events/{$ARG_ID}"
+	const val SALES = "sales"
+	const val NEW_SALE = "sales/new"
 
 	fun create(kind: ProductKind) = "products/new/${kind.name}"
 	fun edit(id: ProductId) = "products/${id.value}"
@@ -74,6 +78,10 @@ fun AppNavHost() {
 			val id = EventId(checkNotNull(entry.arguments?.read { getStringOrNull(Routes.ARG_ID) }))
 			EventDetailScreen(id, onBack = { navController.popBackStack() })
 		}
+		composable(Routes.SALES) {
+			SaleListScreen(onCreateSale = { navController.navigate(Routes.NEW_SALE) }, onBack = { navController.popBackStack() })
+		}
+		composable(Routes.NEW_SALE) { SaleEditorScreen(onClose = { navController.popBackStack() }) }
 	}
 }
 
@@ -81,5 +89,6 @@ fun AppNavHost() {
 private fun routeOf(section: HomeSection): String? = when (section) {
 	HomeSection.CATALOGUE -> Routes.PRODUCTS
 	HomeSection.EVENTS -> Routes.EVENTS
-	HomeSection.SALES, HomeSection.MARKET_ANALYSIS -> null
+	HomeSection.SALES -> Routes.SALES
+	HomeSection.MARKET_ANALYSIS -> null
 }

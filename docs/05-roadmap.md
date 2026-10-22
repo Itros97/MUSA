@@ -1,11 +1,12 @@
 # Roadmap
 ---
 
-MUSA is built one module at a time. Inventory and events are done; the rest follow in roughly this order.
+MUSA is built one module at a time. Inventory, events and sales are done; the rest follow in roughly this order.
 
 ## Version 1, fully local
 
 - [x] **Inventory**: products, variants, stock, prices and tags.
+- [x] **Sales**: orders from every channel, with shipping amounts and margin.
 - [ ] **Backups**: automatic periodic copies of the local database.
 - [ ] **Accounts**: income and expenses.
 - [ ] **Marketplace**: listings and orders from the places the artist sells.

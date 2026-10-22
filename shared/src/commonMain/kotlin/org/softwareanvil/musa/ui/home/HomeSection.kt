@@ -37,7 +37,7 @@ enum class HomeSection(
 		description = "Cada venta registrada, con su canal, su margen y su envío.",
 		icon = MusaIcons.Sales,
 		tone = SectionTone.SECONDARY,
-		isAvailable = false,
+		isAvailable = true,
 	),
 	MARKET_ANALYSIS(
 		title = "Análisis de mercado",

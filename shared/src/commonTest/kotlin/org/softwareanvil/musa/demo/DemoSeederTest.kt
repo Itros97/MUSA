@@ -8,12 +8,14 @@ import kotlinx.coroutines.test.runTest
 import org.softwareanvil.musa.domain.logic.EventSummary
 import org.softwareanvil.musa.domain.logic.EventValidator
 import org.softwareanvil.musa.domain.logic.ProductValidator
+import org.softwareanvil.musa.domain.logic.SaleValidator
 import org.softwareanvil.musa.domain.model.EventStatus
 import org.softwareanvil.musa.domain.model.PhysicalProduct
 import org.softwareanvil.musa.domain.usecase.AddExpenseUseCase
 import org.softwareanvil.musa.domain.usecase.CloseEventUseCase
 import org.softwareanvil.musa.domain.usecase.MoveStockToEventUseCase
 import org.softwareanvil.musa.domain.usecase.RecordEventSaleUseCase
+import org.softwareanvil.musa.domain.usecase.RecordSaleUseCase
 import org.softwareanvil.musa.domain.usecase.SaveEventUseCase
 import org.softwareanvil.musa.domain.usecase.SaveProductUseCase
 import org.softwareanvil.musa.fakes.FakeDatabaseMaintenance
@@ -37,7 +39,8 @@ class DemoTestBed {
 		saveProduct = SaveProductUseCase(products, FakeTagRepository(), ProductValidator(), clock, ids),
 		saveEvent = SaveEventUseCase(events, EventValidator(), clock),
 		moveStock = MoveStockToEventUseCase(events, products, clock),
-		recordSale = RecordEventSaleUseCase(events, sales, clock, ids),
+		recordEventSale = RecordEventSaleUseCase(events, sales, clock, ids),
+		recordSale = RecordSaleUseCase(sales, products, SaleValidator(), ids),
 		addExpense = AddExpenseUseCase(events, clock, ids),
 		closeEvent = CloseEventUseCase(events, clock),
 		clock = clock,
@@ -71,5 +74,14 @@ class DemoSeederTest {
 		assertEquals(4, open.single().sales.size)
 		assertTrue(open.single().stock.all { it.remaining > 0 })
 		assertEquals(1, details.count { it.sales.isEmpty() && it.stock.isEmpty() })
+	}
+
+	@Test
+	fun `seeds four orders outside events through different channels`() = runTest {
+		seeder.seed()
+		val orders = bed.sales.sales.value.filter { it.eventId == null }
+		assertEquals(4, orders.size)
+		assertEquals(4, orders.map { it.channel }.distinct().size)
+		assertTrue(orders.any { it.shippingCharged.cents > 0 })
 	}
 }

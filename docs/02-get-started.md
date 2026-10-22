@@ -22,7 +22,7 @@
 
 The demo uses its own file, `musa-demo.db`, next to the real one. It is deleted and filled again every
 time the demo starts, so you can break things freely. It holds ten products (some low on stock, one sold
-out), an event that closed last month, one happening today and one coming up. Your real `musa.db` is never
+out), an event that closed last month, one happening today, one coming up, and four orders from other channels. Your real `musa.db` is never
 touched.
 
 ## Development tools

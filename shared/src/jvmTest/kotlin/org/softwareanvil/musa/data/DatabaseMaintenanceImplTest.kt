@@ -19,11 +19,13 @@ import org.softwareanvil.musa.db.MusaDatabase
 import org.softwareanvil.musa.demo.DemoSeeder
 import org.softwareanvil.musa.domain.logic.EventValidator
 import org.softwareanvil.musa.domain.logic.ProductValidator
+import org.softwareanvil.musa.domain.logic.SaleValidator
 import org.softwareanvil.musa.domain.logic.UuidGenerator
 import org.softwareanvil.musa.domain.usecase.AddExpenseUseCase
 import org.softwareanvil.musa.domain.usecase.CloseEventUseCase
 import org.softwareanvil.musa.domain.usecase.MoveStockToEventUseCase
 import org.softwareanvil.musa.domain.usecase.RecordEventSaleUseCase
+import org.softwareanvil.musa.domain.usecase.RecordSaleUseCase
 import org.softwareanvil.musa.domain.usecase.SaveEventUseCase
 import org.softwareanvil.musa.domain.usecase.SaveProductUseCase
 
@@ -47,7 +49,8 @@ class DatabaseMaintenanceImplTest {
 		saveProduct = SaveProductUseCase(products, tags, ProductValidator(), clock, ids),
 		saveEvent = SaveEventUseCase(events, EventValidator(), clock),
 		moveStock = MoveStockToEventUseCase(events, products, clock),
-		recordSale = RecordEventSaleUseCase(events, sales, clock, ids),
+		recordEventSale = RecordEventSaleUseCase(events, sales, clock, ids),
+		recordSale = RecordSaleUseCase(sales, products, SaleValidator(), ids),
 		addExpense = AddExpenseUseCase(events, clock, ids),
 		closeEvent = CloseEventUseCase(events, clock),
 		clock = clock,

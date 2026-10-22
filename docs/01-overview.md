@@ -15,6 +15,8 @@ The first module is **inventory**. It keeps the artist's catalogue in a local SQ
 
 The second module is **events**: fairs and markets where stock is taken from the catalogue, sold on the spot, and summed up into gross, cost, expenses and profit.
 
+The third module is **sales**: orders from every channel (online shop, social media, marketplaces, in person and events), with their products, shipping amounts and margin.
+
 ## What it does not do
 
 - It has no server and no account. One device belongs to one artist.
@@ -26,3 +28,4 @@ The second module is **events**: fairs and markets where stock is taken from the
 - [Architecture](03-architecture.md) to see how the code is laid out.
 - [Inventory](04-inventory.md) for the rules the inventory module follows.
 - [Events](06-events.md) for how stock, sales and profit work at a fair.
+- [Sales](07-sales.md) for orders, channels, shipping and margin.
