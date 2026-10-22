@@ -42,6 +42,8 @@ Requires JDK 17+ and, for Android, the Android SDK. iOS builds need a Mac with X
 
 For iOS, open `iosApp/` in Xcode on a Mac and run it from there.
 
+[More on getting started →](docs/02-get-started.md)
+
 ## 🧭 What is in it
 
 The app is built module by module. The first one is **inventory**:
@@ -60,6 +62,20 @@ module is split in three layers: `domain/` holds models, use cases and pure logi
 the SQLDelight queries, mappers and repository implementations; `ui/` holds the screens and their
 ViewModels, which expose state as `StateFlow`. Koin wires the layers together, and each platform
 only provides its database driver and data directory.
+
+[More on the design →](docs/03-architecture.md)
+
+## 📚 Documentation
+
+| | |
+|---|---|
+| [Overview](docs/01-overview.md) | What MUSA does today and what it does not do. |
+| [Get started](docs/02-get-started.md) | Build, run and test it, and where the data is stored. |
+| [Architecture](docs/03-architecture.md) | The domain, data and ui layers and how they are wired. |
+| [Inventory](docs/04-inventory.md) | Products, variants, validation rules, filters and duplication. |
+| [Roadmap](docs/05-roadmap.md) | The modules still to come and the plan for sync. |
+
+[Read the docs online →](https://itros97.github.io/MUSA/)
 
 ## License
 
