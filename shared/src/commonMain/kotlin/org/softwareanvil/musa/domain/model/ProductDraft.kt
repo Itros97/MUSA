@@ -1,6 +1,9 @@
 package org.softwareanvil.musa.domain.model
 
-/** What the editor submits to create or update a product; timestamps and tags are resolved on save. */
+/**
+ * What the editor submits to create or update a product; timestamps and tags are resolved on save.
+ * [stockBaseline] is the stock each variant had when the editor opened, so changes made elsewhere meanwhile are kept.
+ */
 data class ProductDraft(
 	val id: ProductId,
 	val name: String,
@@ -8,6 +11,7 @@ data class ProductDraft(
 	val tagNames: List<String>,
 	val status: ProductStatus,
 	val details: ProductDetails,
+	val stockBaseline: Map<VariantId, Int> = emptyMap(),
 )
 
 /** Kind-specific part of a draft. */

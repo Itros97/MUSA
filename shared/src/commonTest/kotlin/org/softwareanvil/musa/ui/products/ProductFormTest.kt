@@ -38,6 +38,14 @@ class ProductFormMapperTest {
 	}
 
 	@Test
+	fun `remembers the stock each variant had when the editor opened`() {
+		val product = physicalProduct(variants = listOf(physicalVariant("a4", stock = 3), physicalVariant("a3", stock = 7)))
+		val form = ProductFormMapper.fromProduct(product)
+		val edited = ProductFormReducer.stepStock(form, VariantId("a4"), 2)
+		assertEquals(mapOf(VariantId("a4") to 3, VariantId("a3") to 7), ProductFormMapper.parse(edited).draft.stockBaseline)
+	}
+
+	@Test
 	fun `parses euros and centimetres`() {
 		val parsed = ProductFormMapper.parse(
 			form(VariantField.PRICE to "12,5", VariantField.COST to "3", VariantField.STOCK to "4", VariantField.WIDTH to "29,7"),

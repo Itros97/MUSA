@@ -43,7 +43,7 @@ object ProductFormMapper {
 			variants = product.variants.map(::toVariantForm),
 		)
 		return when (product) {
-			is PhysicalProduct -> base.copy(material = product.material)
+			is PhysicalProduct -> base.copy(material = product.material, stockBaseline = product.variants.associate { it.id to it.stock })
 			is DigitalProduct -> base.copy(
 				deliveryFormat = product.deliveryFormat,
 				turnaroundDays = product.turnaroundDays?.toString().orEmpty(),
@@ -62,7 +62,7 @@ object ProductFormMapper {
 				variants = form.variants.map { parser.digitalVariant(it) },
 			)
 		}
-		return ParsedForm(ProductDraft(form.id, form.name, form.description, form.tagNames, form.status, details), parser.errors)
+		return ParsedForm(ProductDraft(form.id, form.name, form.description, form.tagNames, form.status, details, form.stockBaseline), parser.errors)
 	}
 
 	private fun toVariantForm(variant: Variant): VariantForm {

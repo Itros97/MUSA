@@ -37,8 +37,8 @@ class SaveProductUseCase(
 		val errors = validator.validate(clean) + findTakenSkus(clean)
 		if (errors.isNotEmpty()) return SaveResult.Invalid(errors)
 		val now = clock.now()
-		val createdAt = productRepository.findById(clean.id)?.createdAt ?: now
-		val product = clean.toProduct(resolveTags(clean.tagNames, now), createdAt, now)
+		val existing = productRepository.findById(clean.id)
+		val product = clean.withCurrentStock(existing).toProduct(resolveTags(clean.tagNames, now), existing?.createdAt ?: now, now)
 		productRepository.save(product)
 		return SaveResult.Saved(product)
 	}
@@ -58,6 +58,21 @@ class SaveProductUseCase(
 			tagRepository.findByKey(key)
 				?: Tag(TagId(ids.next()), name, TagNormalizer.colorFor(key)).also { tagRepository.insert(it, now) }
 		}
+}
+
+// Stock may have moved while the editor was open (events, quick stock sheet), so only the editor's own change is applied.
+private fun ProductDraft.withCurrentStock(existing: Product?): ProductDraft {
+	val details = details as? PhysicalDetails ?: return this
+	val stored = (existing as? PhysicalProduct)?.variants?.associate { it.id to it.stock } ?: return this
+	return copy(
+		details = details.copy(
+			variants = details.variants.map { variant ->
+				val baseline = stockBaseline[variant.id] ?: return@map variant
+				val current = stored[variant.id] ?: return@map variant
+				variant.copy(stock = maxOf(0, current + variant.stock - baseline))
+			},
+		),
+	)
 }
 
 private fun ProductDraft.trimmed(): ProductDraft = copy(

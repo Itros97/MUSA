@@ -34,14 +34,19 @@ class SaveProductUseCaseTest {
 		name: String = "Lámina",
 		tagNames: List<String> = emptyList(),
 		sku: String? = null,
+		stock: Int = 5,
+		baseline: Int? = null,
 	) = ProductDraft(
 		id = ProductId(id),
 		name = name,
 		description = "",
 		tagNames = tagNames,
 		status = ProductStatus.ACTIVE,
-		details = PhysicalDetails(material = "Papel", variants = listOf(physicalVariant(sku = sku))),
+		details = PhysicalDetails(material = "Papel", variants = listOf(physicalVariant(sku = sku, stock = stock))),
+		stockBaseline = baseline?.let { mapOf(VariantId("v1") to it) }.orEmpty(),
 	)
+
+	private suspend fun storedStock() = (products.findById(ProductId("p1")) as PhysicalProduct).totalStock
 
 	@Test
 	fun `stores a new product with creation time`() = runTest {
@@ -85,4 +90,47 @@ class SaveProductUseCaseTest {
 		assertIs<SaveResult.Invalid>(save(draft(name = "")))
 		assertEquals(null, products.findById(ProductId("p1")))
 	}
+
+	// region stock changed elsewhere while the editor was open
+
+	@Test
+	fun `keeps stock moved elsewhere when the editor did not touch it`() = runTest {
+		save(draft(stock = 10))
+		products.adjustStock(VariantId("v1"), -4, EPOCH)
+		save(draft(name = "Lámina nueva", stock = 10, baseline = 10))
+		assertEquals(6, storedStock())
+	}
+
+	@Test
+	fun `applies the editor change on top of stock moved elsewhere`() = runTest {
+		save(draft(stock = 10))
+		products.adjustStock(VariantId("v1"), -4, EPOCH)
+		save(draft(stock = 12, baseline = 10))
+		assertEquals(8, storedStock())
+	}
+
+	@Test
+	fun `saves the typed stock when nothing changed elsewhere`() = runTest {
+		save(draft(stock = 10))
+		save(draft(stock = 3, baseline = 10))
+		assertEquals(3, storedStock())
+	}
+
+	@Test
+	fun `saves the typed stock of variants without a baseline`() = runTest {
+		save(draft(stock = 10))
+		products.adjustStock(VariantId("v1"), -4, EPOCH)
+		save(draft(stock = 7))
+		assertEquals(7, storedStock())
+	}
+
+	@Test
+	fun `never leaves stock below zero`() = runTest {
+		save(draft(stock = 10))
+		products.adjustStock(VariantId("v1"), -9, EPOCH)
+		save(draft(stock = 5, baseline = 10))
+		assertEquals(0, storedStock())
+	}
+
+	// endregion
 }

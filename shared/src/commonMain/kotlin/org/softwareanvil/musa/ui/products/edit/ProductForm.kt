@@ -5,7 +5,7 @@ import org.softwareanvil.musa.domain.model.ProductKind
 import org.softwareanvil.musa.domain.model.ProductStatus
 import org.softwareanvil.musa.domain.model.VariantId
 
-/** Raw text of the editor, exactly as typed; parsed into a draft on save. */
+/** Raw text of the editor, exactly as typed; parsed into a draft on save. [stockBaseline] is the stock when it opened. */
 data class ProductForm(
 	val id: ProductId,
 	val kind: ProductKind,
@@ -17,6 +17,7 @@ data class ProductForm(
 	val deliveryFormat: String = "",
 	val turnaroundDays: String = "",
 	val variants: List<VariantForm>,
+	val stockBaseline: Map<VariantId, Int> = emptyMap(),
 )
 
 /** Editable fields of one variant. */
