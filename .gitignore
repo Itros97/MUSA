@@ -17,3 +17,12 @@ captures
 !*.xcworkspace/contents.xcworkspacedata
 **/xcshareddata/WorkspaceSettings.xcsettings
 node_modules/
+.vscode/
+.zed/
+*.log
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+.env*
+!.env.example
