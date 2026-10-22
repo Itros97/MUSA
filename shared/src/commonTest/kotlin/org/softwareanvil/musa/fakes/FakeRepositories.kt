@@ -31,6 +31,12 @@ class FakeProductRepository(initial: List<Product> = emptyList()) : ProductRepos
 		.firstOrNull { product -> product.id != excluding && product.variants.any { it.sku == sku } }
 		?.name
 
+	override suspend fun findStock(variantId: VariantId): Int? = products.value.values
+		.filterIsInstance<PhysicalProduct>()
+		.flatMap { it.variants }
+		.firstOrNull { it.id == variantId }
+		?.stock
+
 	override suspend fun save(product: Product) = products.update { it + (product.id to product) }
 
 	override suspend fun adjustStock(variantId: VariantId, delta: Int, at: Instant) = products.update { all ->

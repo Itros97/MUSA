@@ -19,6 +19,9 @@ interface ProductRepository {
 	/** Name of another product already using [sku], or null if it is free. */
 	suspend fun findSkuOwnerName(sku: String, excluding: ProductId): String?
 
+	/** Units in stock of a physical variant, or null if it is not physical or was deleted. */
+	suspend fun findStock(variantId: VariantId): Int?
+
 	/** Inserts or replaces the product with its variants and tag links. */
 	suspend fun save(product: Product)
 

@@ -1,0 +1,30 @@
+-- Every sale, whatever the channel; names, price and cost are copied so later product edits do not change it.
+CREATE TABLE sale (
+	id TEXT NOT NULL PRIMARY KEY,
+	variant_id TEXT NOT NULL,
+	product_name TEXT NOT NULL,
+	variant_name TEXT NOT NULL,
+	quantity INTEGER NOT NULL,
+	unit_price_cents INTEGER NOT NULL,
+	unit_cost_cents INTEGER NOT NULL,
+	channel TEXT NOT NULL,
+	event_id TEXT,
+	sold_at INTEGER NOT NULL,
+	updated_at INTEGER NOT NULL,
+	deleted_at INTEGER
+);
+
+CREATE INDEX sale_event ON sale(event_id);
+
+selectByEvent:
+SELECT * FROM sale WHERE event_id = ? AND deleted_at IS NULL ORDER BY sold_at DESC;
+
+selectById:
+SELECT * FROM sale WHERE id = ? AND deleted_at IS NULL;
+
+insert:
+INSERT INTO sale(id, variant_id, product_name, variant_name, quantity, unit_price_cents, unit_cost_cents, channel, event_id, sold_at, updated_at)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+
+softDelete:
+UPDATE sale SET deleted_at = :at, updated_at = :at WHERE id = :id;

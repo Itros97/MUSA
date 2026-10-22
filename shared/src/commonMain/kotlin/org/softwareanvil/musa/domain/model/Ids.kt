@@ -8,3 +8,12 @@ data class VariantId(val value: String)
 
 /** Unique identifier of a tag. */
 data class TagId(val value: String)
+
+/** Unique identifier of an event. */
+data class EventId(val value: String)
+
+/** Unique identifier of an event expense. */
+data class ExpenseId(val value: String)
+
+/** Unique identifier of a sale. */
+data class SaleId(val value: String)

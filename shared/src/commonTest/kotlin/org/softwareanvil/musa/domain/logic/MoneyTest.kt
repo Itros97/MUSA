@@ -4,6 +4,7 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
 import org.softwareanvil.musa.domain.model.Money
+import org.softwareanvil.musa.domain.model.sumOfMoney
 
 class MoneyParserTest {
 
@@ -64,4 +65,16 @@ class MarginTest {
 
 	@Test
 	fun `has no percent when price is zero`() = assertNull(Margin.of(Money.ZERO, Money(100)).percent)
+}
+
+class MoneyArithmeticTest {
+
+	@Test
+	fun `multiplies by a quantity`() = assertEquals(Money(3600), Money(1200) * 3)
+
+	@Test
+	fun `adds up picked amounts`() = assertEquals(Money(350), listOf(100L, 250L).sumOfMoney { Money(it) })
+
+	@Test
+	fun `adds up an empty list to zero`() = assertEquals(Money.ZERO, emptyList<Long>().sumOfMoney { Money(it) })
 }

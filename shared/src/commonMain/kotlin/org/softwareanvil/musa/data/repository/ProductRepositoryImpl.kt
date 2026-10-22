@@ -24,6 +24,7 @@ class ProductRepositoryImpl(
 ) : ProductRepository {
 
 	private val writer = ProductRowWriter(database)
+	private val stockWriter = CatalogueStockWriter(database)
 
 	// region read
 
@@ -49,6 +50,10 @@ class ProductRepositoryImpl(
 		database.physicalVariantQueries.selectSkuOwnerName(sku, excluding.value).executeAsOneOrNull()
 	}
 
+	override suspend fun findStock(variantId: VariantId): Int? = withContext(dispatcher) {
+		database.physicalVariantQueries.selectStock(variantId.value).executeAsOneOrNull()?.toInt()
+	}
+
 	private fun loadAll(rows: List<ProductRow>): List<Product> {
 		val variants = database.productVariantQueries.selectAll(::VariantRow).executeAsList().groupBy { it.productId }
 		val tags = database.productTagQueries.selectAll { productId, tagId, name, _, color, _, _, _ ->
@@ -70,14 +75,7 @@ class ProductRepositoryImpl(
 	}
 
 	override suspend fun adjustStock(variantId: VariantId, delta: Int, at: Instant) = withContext(dispatcher) {
-		database.transaction {
-			val productId = checkNotNull(database.productVariantQueries.selectProductId(variantId.value).executeAsOneOrNull()) {
-				"Cannot adjust stock of missing variant ${variantId.value}"
-			}
-			database.physicalVariantQueries.adjustStock(delta.toLong(), variantId.value)
-			database.productVariantQueries.touch(at.toEpochMilliseconds(), variantId.value)
-			database.productQueries.touch(at.toEpochMilliseconds(), productId)
-		}
+		database.transaction { stockWriter.adjust(variantId.value, delta.toLong(), at.toEpochMilliseconds()) }
 	}
 
 	override suspend fun updateStatus(id: ProductId, status: ProductStatus, at: Instant) = withContext(dispatcher) {

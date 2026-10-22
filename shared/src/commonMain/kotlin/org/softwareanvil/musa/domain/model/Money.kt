@@ -7,9 +7,14 @@ data class Money(val cents: Long) : Comparable<Money> {
 
 	operator fun minus(other: Money) = Money(cents - other.cents)
 
+	operator fun times(quantity: Int) = Money(cents * quantity)
+
 	override fun compareTo(other: Money) = cents.compareTo(other.cents)
 
 	companion object {
 		val ZERO = Money(0)
 	}
 }
+
+/** Adds up the amounts picked from each element. */
+inline fun <T> Iterable<T>.sumOfMoney(selector: (T) -> Money): Money = fold(Money.ZERO) { total, it -> total + selector(it) }
