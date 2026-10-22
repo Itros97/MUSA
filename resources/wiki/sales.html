@@ -1,0 +1,69 @@
+<h1 id="sales">Sales</h1>
+
+<hr>
+
+<p>The sales module records every sale, whatever the channel, with its products, shipping and margin, and sums them up by period and channel.</p>
+
+<h2 id="a-sale">A sale</h2>
+
+<p>A sale is an order. It has:</p>
+
+<ul>
+<li>A <strong>channel</strong>: Evento, Tienda online, Redes y mensajes, Marketplace, En persona or Otro.</li>
+<li>A date, and an optional customer and note (an order number, the shop it came from…).</li>
+<li>One or more <strong>lines</strong>. Each line is a product variant with a quantity, a unit price and a unit cost.</li>
+<li>What shipping was <strong>charged</strong> to the customer and what it <strong>cost</strong>.</li>
+</ul>
+
+<p>Names, prices and costs are copied when the sale is made, so editing or deleting a product later does not change past sales.</p>
+
+<h2 id="figures">Figures</h2>
+
+<table>
+<thead>
+<tr>
+<th>Figure</th>
+<th>How it is computed</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>Total</td>
+<td>Sum of quantity × price, plus shipping charged</td>
+</tr>
+
+<tr>
+<td>Cost</td>
+<td>Sum of quantity × cost, plus shipping cost</td>
+</tr>
+
+<tr>
+<td><strong>Margin</strong></td>
+<td>Total − cost</td>
+</tr>
+</tbody>
+</table>
+<p>The margin is negative when the sale lost money.</p>
+
+<h2 id="recording-a-sale">Recording a sale</h2>
+
+<p><strong>New sale</strong> opens an editor: pick the channel, the date (today by default), the customer and a note, then add products from the catalogue. Each line starts at one unit and the variant&rsquo;s price; both can be changed for discounts or bundles. Totals update while typing.</p>
+
+<p>Physical variants leave the catalogue when the sale is saved. A sale cannot take more units than the catalogue has, counting every line of the same variant. Digital variants, such as commissions, have no stock.</p>
+
+<h2 id="deleting-a-sale">Deleting a sale</h2>
+
+<p>Deleting a sale gives its physical units back to the catalogue.</p>
+
+<h2 id="event-sales">Event sales</h2>
+
+<p>Sales made at an event are orders of one line with the Evento channel. They show in the sales list too, but they are undone from their event: their units belong to the event&rsquo;s stock, not to the catalogue.</p>
+
+<h2 id="the-sales-list">The sales list</h2>
+
+<p>The list shows the sales of a period (this month, last month, this year or all) and, optionally, of one channel, newest first. On top, a summary of what is shown: number of sales, units, revenue, cost and margin. Tapping a sale opens its lines, shipping and totals.</p>
+
+<h2 id="shipping">Shipping</h2>
+
+<p>This module only keeps the amounts. Carriers, tracking and the state of a parcel will come with the shipping module.</p>
