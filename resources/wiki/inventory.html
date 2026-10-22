@@ -1,0 +1,52 @@
+<h1 id="inventory">Inventory</h1>
+
+<hr>
+
+<p>The inventory module keeps the catalogue: what the artist sells, in which versions, at what price and how much is left.</p>
+
+<h2 id="products-and-variants">Products and variants</h2>
+
+<p>A product is either <strong>physical</strong> or <strong>digital</strong>, and always has at least one variant.</p>
+
+<ul>
+<li>A <strong>physical product</strong> has a material, and its variants carry SKU, stock, minimum stock, weight and width, height and depth.</li>
+<li>A <strong>digital product</strong> has a delivery format and an optional turnaround in days. Its variants are levels or formats, such as &ldquo;sketch&rdquo; or &ldquo;full colour&rdquo;.</li>
+</ul>
+
+<p>Each variant has its own price and cost. Money is stored as whole cents to avoid rounding errors.
+The margin is price minus cost, also shown as a percentage of the price.</p>
+
+<h2 id="rules-on-save">Rules on save</h2>
+
+<p>A draft is checked before it is saved. It is rejected when:</p>
+
+<ul>
+<li>The product name is blank, or it has no variants.</li>
+<li>There are two or more variants and one has no name, or two share a name (case and accents ignored).</li>
+<li>A price, cost, stock, minimum stock or turnaround is negative.</li>
+<li>A weight or size is zero or negative.</li>
+<li>A SKU repeats, inside the product or in another product.</li>
+</ul>
+
+<h2 id="low-stock">Low stock</h2>
+
+<p>A physical variant is low on stock when it is sold out, or when its stock is at or below its minimum.
+A product is low on stock when any of its variants is.</p>
+
+<h2 id="searching-and-filtering">Searching and filtering</h2>
+
+<p>The product list shows active and draft products, or only archived ones. It can be narrowed by:</p>
+
+<ul>
+<li>Text, matched against name, description and SKUs, ignoring case and accents.</li>
+<li>Kind (physical or digital).</li>
+<li>Tags. A product must have every selected tag.</li>
+<li>Low stock only.</li>
+</ul>
+
+<p>Results are sorted by name.</p>
+
+<h2 id="duplicating">Duplicating</h2>
+
+<p>Duplicating a product creates a new draft with new ids. On physical products the stock is reset
+to zero and SKUs are cleared, because a SKU must be unique.</p>

@@ -1,0 +1,57 @@
+<h1 id="get-started">Get started</h1>
+
+<hr>
+
+<h2 id="requirements">Requirements</h2>
+
+<ul>
+<li>JDK 17 or newer.</li>
+<li>For Android, the Android SDK and a device or emulator.</li>
+<li>For iOS, a Mac with Xcode.</li>
+</ul>
+
+<h2 id="run-the-app">Run the app</h2>
+<pre><code class="language-bash">./gradlew :desktopApp:run            <span class="c1"># run the desktop app</span>
+./gradlew :androidApp:installDebug   <span class="c1"># install on a connected Android device or emulator</span>
+</code></pre>
+
+<p>For iOS, open <code>iosApp/</code> in Xcode on a Mac and run it from there.</p>
+
+<h2 id="run-the-tests">Run the tests</h2>
+<pre><code class="language-bash">./gradlew :shared:jvmTest            <span class="c1"># run the shared tests on the JVM</span>
+</code></pre>
+
+<h2 id="where-the-data-lives">Where the data lives</h2>
+
+<p>The database is a single file called <code>musa.db</code>. On desktop it is stored in the per-user data folder of each system:</p>
+
+<table>
+<thead>
+<tr>
+<th>System</th>
+<th>Folder</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>Linux</td>
+<td><code>$XDG_DATA_HOME/MUSA</code> or <code>~/.local/share/MUSA</code></td>
+</tr>
+
+<tr>
+<td>macOS</td>
+<td><code>~/Library/Application Support/MUSA</code></td>
+</tr>
+
+<tr>
+<td>Windows</td>
+<td><code>%APPDATA%\MUSA</code></td>
+</tr>
+</tbody>
+</table>
+<p>On Android and iOS it lives in the app&rsquo;s private storage.</p>
+
+<blockquote>
+<p>⚠️ The schema still changes without migrations. Delete <code>musa.db</code> if the app fails to open after an update.</p>
+</blockquote>

@@ -1,0 +1,32 @@
+<h1 id="overview">Overview</h1>
+
+<hr>
+
+<p>MUSA is a local-first inventory and business app for digital artists who also sell physical stock.
+It runs on Android, desktop and iOS from one Kotlin Multiplatform codebase.</p>
+
+<h2 id="what-it-does-today">What it does today</h2>
+
+<p>The first module is <strong>inventory</strong>. It keeps the artist&rsquo;s catalogue in a local SQLite database:</p>
+
+<ul>
+<li><strong>Products</strong> of two kinds: physical stock (prints, stickers, merch) and digital work made to order (commissions).</li>
+<li><strong>Variants</strong> for each product, each with its own price and cost. Physical variants also carry SKU, stock, minimum stock, weight and size.</li>
+<li><strong>Tags</strong> with a colour from a fixed palette, used to group and filter the catalogue.</li>
+<li><strong>Statuses</strong>: draft, active and archived.</li>
+</ul>
+
+<h2 id="what-it-does-not-do">What it does not do</h2>
+
+<ul>
+<li>It has no server and no account. One device belongs to one artist.</li>
+<li>It does not sync between devices yet. See the <a href="./roadmap">roadmap</a>.</li>
+</ul>
+
+<h2 id="read-next">Read next</h2>
+
+<ul>
+<li><a href="./get-started">Get started</a> to build and run it.</li>
+<li><a href="./architecture">Architecture</a> to see how the code is laid out.</li>
+<li><a href="./inventory">Inventory</a> for the rules the inventory module follows.</li>
+</ul>

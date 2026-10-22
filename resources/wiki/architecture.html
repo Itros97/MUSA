@@ -1,0 +1,49 @@
+<h1 id="architecture">Architecture</h1>
+
+<hr>
+
+<p>MUSA uses Kotlin Multiplatform with Compose Multiplatform for the UI and SQLDelight for storage.
+Almost all the code lives in the <code>shared</code> module. The <code>androidApp</code>, <code>desktopApp</code> and <code>iosApp</code>
+projects are thin entry points.</p>
+
+<h2 id="layers">Layers</h2>
+
+<p>The shared code under <code>org.softwareanvil.musa</code> is split in three layers:</p>
+
+<table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>Holds</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td><code>domain/</code></td>
+<td>Models, repository interfaces, use cases and pure logic such as validation and filtering.</td>
+</tr>
+
+<tr>
+<td><code>data/</code></td>
+<td>SQLDelight queries, mappers between rows and models, and repository implementations.</td>
+</tr>
+
+<tr>
+<td><code>ui/</code></td>
+<td>Compose screens and their ViewModels, which expose state as <code>StateFlow</code>.</td>
+</tr>
+</tbody>
+</table>
+<p>Dependencies point inwards: <code>ui</code> and <code>data</code> depend on <code>domain</code>, and <code>domain</code> depends on nothing.</p>
+
+<h2 id="wiring">Wiring</h2>
+
+<p>Koin connects the layers in <code>di/</code>. Each platform only provides two things: its SQLite driver
+and the folder where the database lives. Clocks and id generators are injected, so the domain
+logic can be tested with fixed values.</p>
+
+<h2 id="ids">Ids</h2>
+
+<p>Every product, variant and tag has a UUID generated on the device. This keeps the door open to
+syncing with a backend later without renumbering anything.</p>
