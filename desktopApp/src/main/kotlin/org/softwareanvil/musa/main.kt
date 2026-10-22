@@ -10,7 +10,7 @@ import org.softwareanvil.musa.di.initKoin
 import org.softwareanvil.musa.di.seedDemoData
 
 fun main() {
-    initKoin()
+    initKoin(devTools = System.getProperty("musa.devTools") == "true")
     if (DemoMode.isEnabled) runBlocking { seedDemoData() }
     application {
         Window(

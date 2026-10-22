@@ -34,3 +34,10 @@ UPDATE product SET updated_at = ? WHERE id = ?;
 
 softDelete:
 UPDATE product SET deleted_at = ?, updated_at = ? WHERE id = ?;
+
+-- Development tools only: wipes the table for real, without soft deletes.
+deleteAll:
+DELETE FROM product;
+
+countAll:
+SELECT count(*) FROM product;

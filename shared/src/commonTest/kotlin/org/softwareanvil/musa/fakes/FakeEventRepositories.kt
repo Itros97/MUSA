@@ -18,6 +18,7 @@ import org.softwareanvil.musa.domain.model.PhysicalProduct
 import org.softwareanvil.musa.domain.model.Sale
 import org.softwareanvil.musa.domain.model.SaleId
 import org.softwareanvil.musa.domain.model.VariantId
+import org.softwareanvil.musa.domain.repository.DatabaseMaintenance
 import org.softwareanvil.musa.domain.repository.EventRepository
 import org.softwareanvil.musa.domain.repository.SaleRepository
 
@@ -106,5 +107,23 @@ class FakeEventRepository(
 			taken = units,
 			sold = eventSales.filter { it.variantId == variantId }.sumOf { it.quantity },
 		)
+	}
+}
+
+/** Empty while no product or event was stored; wiping clears every fake it was given. */
+class FakeDatabaseMaintenance(
+	private val products: FakeProductRepository,
+	private val events: FakeEventRepository,
+	private val sales: FakeSaleRepository,
+) : DatabaseMaintenance {
+
+	override suspend fun isEmpty() = products.products.value.isEmpty() && events.events.value.isEmpty()
+
+	override suspend fun wipeAll() {
+		products.products.update { emptyMap() }
+		events.events.update { emptyMap() }
+		events.taken.update { emptyMap() }
+		events.expenses.update { emptyList() }
+		sales.sales.update { emptyList() }
 	}
 }

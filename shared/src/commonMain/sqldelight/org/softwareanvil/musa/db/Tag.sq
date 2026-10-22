@@ -17,3 +17,7 @@ SELECT * FROM tag WHERE normalized_name = ? AND deleted_at IS NULL;
 
 insert:
 INSERT INTO tag(id, name, normalized_name, color, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?);
+
+-- Development tools only: wipes the table for real, without soft deletes.
+deleteAll:
+DELETE FROM tag;

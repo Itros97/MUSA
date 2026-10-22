@@ -24,3 +24,7 @@ DELETE FROM product_tag WHERE product_id = ?;
 
 insert:
 INSERT INTO product_tag(product_id, tag_id, position) VALUES (?, ?, ?);
+
+-- Development tools only: wipes the table for real, without soft deletes.
+deleteAll:
+DELETE FROM product_tag;

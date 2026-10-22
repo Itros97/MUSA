@@ -34,3 +34,8 @@ tasks.register<JavaExec>("runDemo") {
     classpath = sourceSets["main"].runtimeClasspath
     systemProperty("musa.demo", "true")
 }
+
+// Only launches from Gradle (run, runDemo) get the development tools; packaged installers never set this property.
+tasks.withType<JavaExec>().configureEach {
+    systemProperty("musa.devTools", "true")
+}

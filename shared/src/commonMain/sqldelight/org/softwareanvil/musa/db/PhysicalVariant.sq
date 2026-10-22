@@ -33,3 +33,7 @@ FROM physical_variant pv
 JOIN product_variant v ON v.id = pv.variant_id
 JOIN product p ON p.id = v.product_id
 WHERE pv.variant_id = ? AND v.deleted_at IS NULL AND p.deleted_at IS NULL;
+
+-- Development tools only: wipes the table for real, without soft deletes.
+deleteAll:
+DELETE FROM physical_variant;

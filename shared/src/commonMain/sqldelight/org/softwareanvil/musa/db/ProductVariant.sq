@@ -46,3 +46,7 @@ WHERE product_id = :productId AND deleted_at IS NULL AND id NOT IN :keep;
 
 touch:
 UPDATE product_variant SET updated_at = ? WHERE id = ?;
+
+-- Development tools only: wipes the table for real, without soft deletes.
+deleteAll:
+DELETE FROM product_variant;

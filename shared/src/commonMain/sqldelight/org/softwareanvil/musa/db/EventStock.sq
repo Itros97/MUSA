@@ -34,3 +34,7 @@ INSERT INTO event_stock(event_id, variant_id, taken, updated_at) VALUES (?, ?, ?
 
 updateTaken:
 UPDATE event_stock SET taken = :taken, updated_at = :at WHERE event_id = :eventId AND variant_id = :variantId;
+
+-- Development tools only: wipes the table for real, without soft deletes.
+deleteAll:
+DELETE FROM event_stock;

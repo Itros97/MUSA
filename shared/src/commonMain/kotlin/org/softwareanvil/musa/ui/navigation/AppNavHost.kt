@@ -7,6 +7,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import androidx.savedstate.read
+import org.koin.compose.koinInject
+import org.softwareanvil.musa.di.AppConfig
 import org.softwareanvil.musa.domain.model.EventId
 import org.softwareanvil.musa.domain.model.ProductId
 import org.softwareanvil.musa.domain.model.ProductKind
@@ -37,6 +39,7 @@ private object Routes {
 @Composable
 fun AppNavHost() {
 	val navController = rememberNavController()
+	val config = koinInject<AppConfig>()
 	val openProduct = { id: ProductId ->
 		// Replaces the current editor so back returns to the catalogue, not to the original product.
 		navController.navigate(Routes.edit(id)) { popUpTo(Routes.PRODUCTS) }
@@ -44,7 +47,10 @@ fun AppNavHost() {
 
 	NavHost(navController = navController, startDestination = Routes.HOME) {
 		composable(Routes.HOME) {
-			HomeScreen(onOpenSection = { section -> routeOf(section)?.let(navController::navigate) })
+			HomeScreen(
+				onOpenSection = { section -> routeOf(section)?.let(navController::navigate) },
+				showDevTools = config.devTools,
+			)
 		}
 		composable(Routes.PRODUCTS) {
 			ProductListScreen(

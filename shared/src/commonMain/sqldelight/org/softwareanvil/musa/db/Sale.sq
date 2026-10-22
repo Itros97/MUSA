@@ -28,3 +28,7 @@ VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
 
 softDelete:
 UPDATE sale SET deleted_at = :at, updated_at = :at WHERE id = :id;
+
+-- Development tools only: wipes the table for real, without soft deletes.
+deleteAll:
+DELETE FROM sale;

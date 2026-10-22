@@ -19,3 +19,7 @@ INSERT INTO event_expense(id, event_id, concept, amount_cents, created_at, updat
 
 softDelete:
 UPDATE event_expense SET deleted_at = :at, updated_at = :at WHERE id = :id;
+
+-- Development tools only: wipes the table for real, without soft deletes.
+deleteAll:
+DELETE FROM event_expense;

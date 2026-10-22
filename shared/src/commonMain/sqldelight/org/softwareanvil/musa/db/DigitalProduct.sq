@@ -12,3 +12,7 @@ SELECT * FROM digital_product WHERE product_id = ?;
 
 upsert:
 INSERT OR REPLACE INTO digital_product(product_id, delivery_format, turnaround_days) VALUES (?, ?, ?);
+
+-- Development tools only: wipes the table for real, without soft deletes.
+deleteAll:
+DELETE FROM digital_product;

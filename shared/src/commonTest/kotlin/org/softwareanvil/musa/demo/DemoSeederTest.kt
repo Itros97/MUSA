@@ -16,6 +16,7 @@ import org.softwareanvil.musa.domain.usecase.MoveStockToEventUseCase
 import org.softwareanvil.musa.domain.usecase.RecordEventSaleUseCase
 import org.softwareanvil.musa.domain.usecase.SaveEventUseCase
 import org.softwareanvil.musa.domain.usecase.SaveProductUseCase
+import org.softwareanvil.musa.fakes.FakeDatabaseMaintenance
 import org.softwareanvil.musa.fakes.FakeEventRepository
 import org.softwareanvil.musa.fakes.FakeProductRepository
 import org.softwareanvil.musa.fakes.FakeSaleRepository
@@ -23,15 +24,16 @@ import org.softwareanvil.musa.fakes.FakeTagRepository
 import org.softwareanvil.musa.fakes.FixedClock
 import org.softwareanvil.musa.fakes.SequentialIds
 
-class DemoSeederTest {
+/** Fake repositories plus a [DemoSeeder] wired to them. */
+class DemoTestBed {
+	val clock = FixedClock()
+	val ids = SequentialIds("demo")
+	val products = FakeProductRepository()
+	val sales = FakeSaleRepository()
+	val events = FakeEventRepository(products, sales)
+	val maintenance = FakeDatabaseMaintenance(products, events, sales)
 
-	private val clock = FixedClock()
-	private val ids = SequentialIds("demo")
-	private val products = FakeProductRepository()
-	private val sales = FakeSaleRepository()
-	private val events = FakeEventRepository(products, sales)
-
-	private val seeder = DemoSeeder(
+	val seeder = DemoSeeder(
 		saveProduct = SaveProductUseCase(products, FakeTagRepository(), ProductValidator(), clock, ids),
 		saveEvent = SaveEventUseCase(events, EventValidator(), clock),
 		moveStock = MoveStockToEventUseCase(events, products, clock),
@@ -41,6 +43,14 @@ class DemoSeederTest {
 		clock = clock,
 		ids = ids,
 	)
+}
+
+class DemoSeederTest {
+
+	private val bed = DemoTestBed()
+	private val seeder = bed.seeder
+	private val products = bed.products
+	private val events = bed.events
 
 	@Test
 	fun `seeds a catalogue with low and sold-out stock`() = runTest {

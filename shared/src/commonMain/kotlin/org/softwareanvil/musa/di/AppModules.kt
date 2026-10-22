@@ -8,16 +8,19 @@ import org.koin.core.context.startKoin
 import org.koin.dsl.KoinAppDeclaration
 import org.koin.dsl.module
 import org.koin.mp.KoinPlatform
+import org.softwareanvil.musa.data.repository.DatabaseMaintenanceImpl
 import org.softwareanvil.musa.data.repository.EventRepositoryImpl
 import org.softwareanvil.musa.data.repository.ProductRepositoryImpl
 import org.softwareanvil.musa.data.repository.SaleRepositoryImpl
 import org.softwareanvil.musa.data.repository.TagRepositoryImpl
 import org.softwareanvil.musa.db.MusaDatabase
 import org.softwareanvil.musa.demo.DemoSeeder
+import org.softwareanvil.musa.demo.FillWithDemoDataUseCase
 import org.softwareanvil.musa.domain.logic.EventValidator
 import org.softwareanvil.musa.domain.logic.IdGenerator
 import org.softwareanvil.musa.domain.logic.ProductValidator
 import org.softwareanvil.musa.domain.logic.UuidGenerator
+import org.softwareanvil.musa.domain.repository.DatabaseMaintenance
 import org.softwareanvil.musa.domain.repository.EventRepository
 import org.softwareanvil.musa.domain.repository.ProductRepository
 import org.softwareanvil.musa.domain.repository.SaleRepository
@@ -42,6 +45,7 @@ import org.softwareanvil.musa.domain.usecase.ReturnStockFromEventUseCase
 import org.softwareanvil.musa.domain.usecase.SaveEventUseCase
 import org.softwareanvil.musa.domain.usecase.SaveProductUseCase
 import org.softwareanvil.musa.domain.usecase.UndoSaleUseCase
+import org.softwareanvil.musa.domain.usecase.WipeDatabaseUseCase
 
 /** Database and repositories. */
 val dataModule = module {
@@ -51,6 +55,7 @@ val dataModule = module {
 	single<TagRepository> { TagRepositoryImpl(get(), get()) }
 	single<EventRepository> { EventRepositoryImpl(get(), get()) }
 	single<SaleRepository> { SaleRepositoryImpl(get(), get()) }
+	single<DatabaseMaintenance> { DatabaseMaintenanceImpl(get(), get()) }
 }
 
 /** Pure logic and use cases. */
@@ -79,18 +84,20 @@ val domainModule = module {
 	factory { ObserveEventsUseCase(get()) }
 	factory { ObserveEventDetailUseCase(get()) }
 	factory { GetEventUseCase(get()) }
+	factory { WipeDatabaseUseCase(get()) }
 }
 
-/** Toy data for the demo database. */
+/** Toy data for the demo database and the development tools. */
 val demoModule = module {
 	factory { DemoSeeder(get(), get(), get(), get(), get(), get(), get(), get()) }
+	factory { FillWithDemoDataUseCase(get(), get()) }
 }
 
-/** Starts dependency injection; platforms pass extra config such as the Android context. */
-fun initKoin(config: KoinAppDeclaration = {}) {
+/** Starts dependency injection; platforms say whether to show [devTools] and pass extra config such as the Android context. */
+fun initKoin(devTools: Boolean = false, config: KoinAppDeclaration = {}) {
 	startKoin {
 		config()
-		modules(platformModule, dataModule, domainModule, uiModule, demoModule)
+		modules(module { single { AppConfig(devTools) } }, platformModule, dataModule, domainModule, uiModule, demoModule)
 	}
 }
 

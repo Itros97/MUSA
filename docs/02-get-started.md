@@ -25,6 +25,17 @@ time the demo starts, so you can break things freely. It holds ten products (som
 out), an event that closed last month, one happening today and one coming up. Your real `musa.db` is never
 touched.
 
+## Development tools
+
+Development builds show a **Herramientas de prueba** card at the bottom of the home screen: the Android
+debug build (`installDebug`) and the desktop app launched from Gradle (`run` or `runDemo`). Release builds
+and packaged installers never show it.
+
+- **Rellenar con datos de prueba** loads the same toy data as `runDemo`. It only works on an empty database,
+  so the made-up SKUs never clash with real ones.
+- **Vaciar base de datos** deletes every product, tag, event, sale and expense after asking for confirmation.
+  It really deletes the rows and cannot be undone.
+
 For iOS, open `iosApp/` in Xcode on a Mac and run it from there.
 
 ## Run the tests
