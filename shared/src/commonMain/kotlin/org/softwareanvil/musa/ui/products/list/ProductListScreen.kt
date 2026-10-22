@@ -4,7 +4,9 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
@@ -12,11 +14,13 @@ import androidx.compose.foundation.lazy.grid.LazyGridScope
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -40,6 +44,7 @@ import org.softwareanvil.musa.ui.components.MusaIcons
 fun ProductListScreen(
 	onOpenProduct: (ProductId) -> Unit,
 	onCreateProduct: (ProductKind) -> Unit,
+	onBack: () -> Unit,
 	viewModel: ProductListViewModel = koinViewModel(),
 ) {
 	val state by viewModel.state.collectAsStateWithLifecycle()
@@ -65,7 +70,7 @@ fun ProductListScreen(
 			verticalArrangement = Arrangement.spacedBy(12.dp),
 			modifier = Modifier.fillMaxSize().padding(padding),
 		) {
-			fullWidth { Header(state) }
+			fullWidth { Header(state, onBack) }
 			if (!state.isCatalogueEmpty) {
 				fullWidth {
 					ProductFilterBar(
@@ -125,9 +130,14 @@ fun ProductListScreen(
 }
 
 @Composable
-private fun Header(state: ProductListState) {
+private fun Header(state: ProductListState, onBack: () -> Unit) {
 	Column(modifier = Modifier.padding(top = 8.dp, bottom = 4.dp)) {
-		Text("Catálogo", style = MaterialTheme.typography.headlineMedium)
+		Row(verticalAlignment = Alignment.CenterVertically) {
+			IconButton(onClick = onBack, modifier = Modifier.offset(x = (-12).dp)) {
+				Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Volver al inicio")
+			}
+			Text("Catálogo", style = MaterialTheme.typography.headlineMedium, modifier = Modifier.offset(x = (-8).dp))
+		}
 		val count = state.products.size
 		val subtitle = when {
 			state.isCatalogueEmpty -> "Todo lo que vendes, en un sitio"
