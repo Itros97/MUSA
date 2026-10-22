@@ -8,11 +8,13 @@ import org.softwareanvil.musa.domain.model.Money
 import org.softwareanvil.musa.domain.model.Sale
 import org.softwareanvil.musa.domain.model.SaleChannel
 import org.softwareanvil.musa.domain.model.SaleId
+import org.softwareanvil.musa.domain.model.SaleLine
+import org.softwareanvil.musa.domain.model.SaleLineId
 import org.softwareanvil.musa.domain.model.VariantId
 import org.softwareanvil.musa.domain.repository.EventRepository
 import org.softwareanvil.musa.domain.repository.SaleRepository
 
-/** Sells units from an event's stock at [unitPrice]; the cost is copied from the variant at that moment. */
+/** Sells units from an event's stock at [unitPrice] as a one-line sale; the cost is copied from the variant at that moment. */
 class RecordEventSaleUseCase(
 	private val eventRepository: EventRepository,
 	private val saleRepository: SaleRepository,
@@ -33,14 +35,15 @@ class RecordEventSaleUseCase(
 		saleRepository.record(
 			Sale(
 				id = SaleId(ids.next()),
-				variantId = variantId,
-				productName = line.productName,
-				variantName = line.variantName,
-				quantity = quantity,
-				unitPrice = unitPrice,
-				unitCost = line.cost,
 				channel = SaleChannel.EVENT,
 				eventId = eventId,
+				customer = "",
+				note = "",
+				lines = listOf(
+					SaleLine(SaleLineId(ids.next()), variantId, line.productName, line.variantName, quantity, unitPrice, line.cost),
+				),
+				shippingCharged = Money.ZERO,
+				shippingCost = Money.ZERO,
 				soldAt = clock.now(),
 			),
 		)

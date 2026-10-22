@@ -29,7 +29,7 @@ class DemoTestBed {
 	val clock = FixedClock()
 	val ids = SequentialIds("demo")
 	val products = FakeProductRepository()
-	val sales = FakeSaleRepository()
+	val sales = FakeSaleRepository(products)
 	val events = FakeEventRepository(products, sales)
 	val maintenance = FakeDatabaseMaintenance(products, events, sales)
 

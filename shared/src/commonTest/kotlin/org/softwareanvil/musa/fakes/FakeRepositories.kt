@@ -26,6 +26,9 @@ class FakeProductRepository(initial: List<Product> = emptyList()) : ProductRepos
 
 	override suspend fun findById(id: ProductId) = products.value[id]
 
+	override suspend fun findByVariant(variantId: VariantId): Product? =
+		products.value.values.firstOrNull { product -> product.variants.any { it.id == variantId } }
+
 	override suspend fun findSkuOwnerName(sku: String, excluding: ProductId): String? = products.value.values
 		.filterIsInstance<PhysicalProduct>()
 		.firstOrNull { product -> product.id != excluding && product.variants.any { it.sku == sku } }

@@ -27,6 +27,7 @@ class EventRepositoryImpl(
 ) : EventRepository {
 
 	private val stock = EventStockWriter(database)
+	private val sales = SaleRowStore(database)
 
 	// region read
 
@@ -38,10 +39,10 @@ class EventRepositoryImpl(
 	override fun observeDetail(id: EventId): Flow<EventDetail?> = combine(
 		database.eventQueries.selectById(id.value).asFlow().mapToOneOrNull(dispatcher),
 		database.eventStockQueries.selectByEvent(id.value, EventMapper::toStockLine).asFlow().mapToList(dispatcher),
-		database.saleQueries.selectByEvent(id.value).asFlow().mapToList(dispatcher),
+		database.saleQueries.selectByEvent(id.value).asFlow().mapToList(dispatcher).map { rows -> withContext(dispatcher) { sales.withLines(rows) } },
 		database.eventExpenseQueries.selectByEvent(id.value).asFlow().mapToList(dispatcher),
-	) { event, lines, sales, expenses ->
-		event?.let { EventDetail(EventMapper.toEvent(it), lines, sales.map(EventMapper::toSale), expenses.map(EventMapper::toExpense)) }
+	) { event, lines, eventSales, expenses ->
+		event?.let { EventDetail(EventMapper.toEvent(it), lines, eventSales, expenses.map(EventMapper::toExpense)) }
 	}
 
 	override suspend fun findById(id: EventId): Event? = withContext(dispatcher) {

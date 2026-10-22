@@ -1,20 +1,21 @@
--- Every sale, whatever the channel; names, price and cost are copied so later product edits do not change it.
+-- Every sale (an order), whatever the channel; its products live in sale_line.
 CREATE TABLE sale (
 	id TEXT NOT NULL PRIMARY KEY,
-	variant_id TEXT NOT NULL,
-	product_name TEXT NOT NULL,
-	variant_name TEXT NOT NULL,
-	quantity INTEGER NOT NULL,
-	unit_price_cents INTEGER NOT NULL,
-	unit_cost_cents INTEGER NOT NULL,
 	channel TEXT NOT NULL,
 	event_id TEXT,
+	customer TEXT NOT NULL,
+	note TEXT NOT NULL,
+	shipping_charged_cents INTEGER NOT NULL,
+	shipping_cost_cents INTEGER NOT NULL,
 	sold_at INTEGER NOT NULL,
 	updated_at INTEGER NOT NULL,
 	deleted_at INTEGER
 );
 
 CREATE INDEX sale_event ON sale(event_id);
+
+selectAll:
+SELECT * FROM sale WHERE deleted_at IS NULL ORDER BY sold_at DESC;
 
 selectByEvent:
 SELECT * FROM sale WHERE event_id = ? AND deleted_at IS NULL ORDER BY sold_at DESC;
@@ -23,8 +24,8 @@ selectById:
 SELECT * FROM sale WHERE id = ? AND deleted_at IS NULL;
 
 insert:
-INSERT INTO sale(id, variant_id, product_name, variant_name, quantity, unit_price_cents, unit_cost_cents, channel, event_id, sold_at, updated_at)
-VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+INSERT INTO sale(id, channel, event_id, customer, note, shipping_charged_cents, shipping_cost_cents, sold_at, updated_at)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
 
 softDelete:
 UPDATE sale SET deleted_at = :at, updated_at = :at WHERE id = :id;

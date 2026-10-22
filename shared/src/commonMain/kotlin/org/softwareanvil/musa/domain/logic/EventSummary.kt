@@ -19,9 +19,9 @@ data class EventSummary(
 
 		/** Adds up the sales and expenses of [detail]. */
 		fun of(detail: EventDetail) = EventSummary(
-			unitsSold = detail.sales.sumOf { it.quantity },
+			unitsSold = detail.sales.sumOf { it.units },
 			gross = detail.sales.sumOfMoney { it.total },
-			costOfGoods = detail.sales.sumOfMoney { it.totalCost },
+			costOfGoods = detail.sales.sumOfMoney { it.cost },
 			expenses = detail.expenses.sumOfMoney { it.amount },
 		)
 	}

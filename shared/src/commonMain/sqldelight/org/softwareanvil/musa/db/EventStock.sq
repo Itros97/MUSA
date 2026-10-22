@@ -17,8 +17,8 @@ SELECT
 	v.cost_cents,
 	es.taken,
 	(
-		SELECT coalesce(sum(s.quantity), 0) FROM sale s
-		WHERE s.event_id = es.event_id AND s.variant_id = es.variant_id AND s.deleted_at IS NULL
+		SELECT coalesce(sum(sl.quantity), 0) FROM sale_line sl JOIN sale s ON s.id = sl.sale_id
+		WHERE s.event_id = es.event_id AND sl.variant_id = es.variant_id AND s.deleted_at IS NULL
 	) AS sold
 FROM event_stock es
 JOIN product_variant v ON v.id = es.variant_id

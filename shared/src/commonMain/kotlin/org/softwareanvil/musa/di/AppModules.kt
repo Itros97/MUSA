@@ -19,6 +19,7 @@ import org.softwareanvil.musa.demo.FillWithDemoDataUseCase
 import org.softwareanvil.musa.domain.logic.EventValidator
 import org.softwareanvil.musa.domain.logic.IdGenerator
 import org.softwareanvil.musa.domain.logic.ProductValidator
+import org.softwareanvil.musa.domain.logic.SaleValidator
 import org.softwareanvil.musa.domain.logic.UuidGenerator
 import org.softwareanvil.musa.domain.repository.DatabaseMaintenance
 import org.softwareanvil.musa.domain.repository.EventRepository
@@ -32,6 +33,7 @@ import org.softwareanvil.musa.domain.usecase.CloseEventUseCase
 import org.softwareanvil.musa.domain.usecase.DeleteEventUseCase
 import org.softwareanvil.musa.domain.usecase.DeleteExpenseUseCase
 import org.softwareanvil.musa.domain.usecase.DeleteProductUseCase
+import org.softwareanvil.musa.domain.usecase.DeleteSaleUseCase
 import org.softwareanvil.musa.domain.usecase.DuplicateProductUseCase
 import org.softwareanvil.musa.domain.usecase.GetEventUseCase
 import org.softwareanvil.musa.domain.usecase.GetProductUseCase
@@ -39,8 +41,10 @@ import org.softwareanvil.musa.domain.usecase.MoveStockToEventUseCase
 import org.softwareanvil.musa.domain.usecase.ObserveEventDetailUseCase
 import org.softwareanvil.musa.domain.usecase.ObserveEventsUseCase
 import org.softwareanvil.musa.domain.usecase.ObserveProductsUseCase
+import org.softwareanvil.musa.domain.usecase.ObserveSalesUseCase
 import org.softwareanvil.musa.domain.usecase.ObserveTagsUseCase
 import org.softwareanvil.musa.domain.usecase.RecordEventSaleUseCase
+import org.softwareanvil.musa.domain.usecase.RecordSaleUseCase
 import org.softwareanvil.musa.domain.usecase.ReturnStockFromEventUseCase
 import org.softwareanvil.musa.domain.usecase.SaveEventUseCase
 import org.softwareanvil.musa.domain.usecase.SaveProductUseCase
@@ -85,6 +89,10 @@ val domainModule = module {
 	factory { ObserveEventDetailUseCase(get()) }
 	factory { GetEventUseCase(get()) }
 	factory { WipeDatabaseUseCase(get()) }
+	single { SaleValidator() }
+	factory { RecordSaleUseCase(get(), get(), get(), get()) }
+	factory { DeleteSaleUseCase(get(), get()) }
+	factory { ObserveSalesUseCase(get()) }
 }
 
 /** Toy data for the demo database and the development tools. */

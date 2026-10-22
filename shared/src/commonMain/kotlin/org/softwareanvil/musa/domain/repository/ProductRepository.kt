@@ -16,6 +16,9 @@ interface ProductRepository {
 	/** Returns the product, or null if it does not exist or was deleted. */
 	suspend fun findById(id: ProductId): Product?
 
+	/** The product owning [variantId], or null if it does not exist or was deleted. */
+	suspend fun findByVariant(variantId: VariantId): Product?
+
 	/** Name of another product already using [sku], or null if it is free. */
 	suspend fun findSkuOwnerName(sku: String, excluding: ProductId): String?
 

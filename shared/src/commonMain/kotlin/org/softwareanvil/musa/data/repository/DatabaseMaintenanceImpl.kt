@@ -18,6 +18,7 @@ class DatabaseMaintenanceImpl(
 	override suspend fun wipeAll() = withContext(dispatcher) {
 		database.transaction {
 			with(database) {
+				saleLineQueries.deleteAll()
 				saleQueries.deleteAll()
 				eventExpenseQueries.deleteAll()
 				eventStockQueries.deleteAll()

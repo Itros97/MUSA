@@ -17,3 +17,6 @@ data class ExpenseId(val value: String)
 
 /** Unique identifier of a sale. */
 data class SaleId(val value: String)
+
+/** Unique identifier of one line of a sale. */
+data class SaleLineId(val value: String)

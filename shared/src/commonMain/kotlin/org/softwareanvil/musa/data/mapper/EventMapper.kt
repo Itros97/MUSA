@@ -10,14 +10,10 @@ import org.softwareanvil.musa.domain.model.EventStatus
 import org.softwareanvil.musa.domain.model.EventStockLine
 import org.softwareanvil.musa.domain.model.ExpenseId
 import org.softwareanvil.musa.domain.model.Money
-import org.softwareanvil.musa.domain.model.Sale
-import org.softwareanvil.musa.domain.model.SaleChannel
-import org.softwareanvil.musa.domain.model.SaleId
 import org.softwareanvil.musa.domain.model.VariantId
 import org.softwareanvil.musa.db.Event as EventRow
-import org.softwareanvil.musa.db.Sale as SaleRow
 
-/** Converts event, expense and sale rows into domain models. */
+/** Converts event, stock and expense rows into domain models. */
 internal object EventMapper {
 
 	/** Builds an event; dates are stored as ISO strings. */
@@ -57,18 +53,5 @@ internal object EventMapper {
 		concept = row.concept,
 		amount = Money(row.amount_cents),
 		createdAt = Instant.fromEpochMilliseconds(row.created_at),
-	)
-
-	fun toSale(row: SaleRow) = Sale(
-		id = SaleId(row.id),
-		variantId = VariantId(row.variant_id),
-		productName = row.product_name,
-		variantName = row.variant_name,
-		quantity = row.quantity.toInt(),
-		unitPrice = Money(row.unit_price_cents),
-		unitCost = Money(row.unit_cost_cents),
-		channel = SaleChannel.valueOf(row.channel),
-		eventId = row.event_id?.let(::EventId),
-		soldAt = Instant.fromEpochMilliseconds(row.sold_at),
 	)
 }

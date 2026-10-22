@@ -16,22 +16,9 @@ import org.softwareanvil.musa.domain.model.EventStockLine
 import org.softwareanvil.musa.domain.model.ExpenseId
 import org.softwareanvil.musa.domain.model.PhysicalProduct
 import org.softwareanvil.musa.domain.model.Sale
-import org.softwareanvil.musa.domain.model.SaleId
 import org.softwareanvil.musa.domain.model.VariantId
 import org.softwareanvil.musa.domain.repository.DatabaseMaintenance
 import org.softwareanvil.musa.domain.repository.EventRepository
-import org.softwareanvil.musa.domain.repository.SaleRepository
-
-class FakeSaleRepository : SaleRepository {
-
-	val sales = MutableStateFlow(emptyList<Sale>())
-
-	override suspend fun record(sale: Sale) = sales.update { it + sale }
-
-	override suspend fun findById(id: SaleId) = sales.value.firstOrNull { it.id == id }
-
-	override suspend fun delete(id: SaleId, at: Instant) = sales.update { all -> all.filterNot { it.id == id } }
-}
 
 /** Keeps taken units per event and variant, and moves catalogue stock through [products]. */
 class FakeEventRepository(
@@ -105,7 +92,7 @@ class FakeEventRepository(
 			price = variant.price,
 			cost = variant.cost,
 			taken = units,
-			sold = eventSales.filter { it.variantId == variantId }.sumOf { it.quantity },
+			sold = eventSales.flatMap { it.lines }.filter { it.variantId == variantId }.sumOf { it.quantity },
 		)
 	}
 }

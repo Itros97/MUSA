@@ -27,6 +27,9 @@ JOIN product p ON p.id = v.product_id
 WHERE lower(pv.sku) = lower(:sku) AND p.id != :excluding AND v.deleted_at IS NULL AND p.deleted_at IS NULL
 LIMIT 1;
 
+isPhysical:
+SELECT count(*) > 0 FROM physical_variant WHERE variant_id = ?;
+
 selectStock:
 SELECT pv.stock
 FROM physical_variant pv

@@ -18,7 +18,7 @@ class EventTestBed(vararg events: Event = arrayOf(event())) {
 	val clock = FixedClock()
 	val ids = SequentialIds("new")
 	val products = FakeProductRepository(listOf(physicalProduct(variants = listOf(physicalVariant(stock = 10)))))
-	val sales = FakeSaleRepository()
+	val sales = FakeSaleRepository(products)
 	val events = FakeEventRepository(products, sales, events.toList())
 
 	val moveStock = MoveStockToEventUseCase(this.events, products, clock)

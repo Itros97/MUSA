@@ -33,7 +33,7 @@ class DatabaseMaintenanceImplTest {
 	private val database = MusaDatabase(driver)
 	private val tables = listOf(
 		"product", "physical_product", "digital_product", "product_variant", "physical_variant", "tag", "product_tag",
-		"event", "event_stock", "event_expense", "sale",
+		"event", "event_stock", "event_expense", "sale", "sale_line",
 	)
 	private val products = ProductRepositoryImpl(database, Dispatchers.Unconfined)
 	private val tags = TagRepositoryImpl(database, Dispatchers.Unconfined)

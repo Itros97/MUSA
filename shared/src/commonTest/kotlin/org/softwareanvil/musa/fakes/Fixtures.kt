@@ -17,6 +17,8 @@ import org.softwareanvil.musa.domain.model.ProductStatus
 import org.softwareanvil.musa.domain.model.Sale
 import org.softwareanvil.musa.domain.model.SaleChannel
 import org.softwareanvil.musa.domain.model.SaleId
+import org.softwareanvil.musa.domain.model.SaleLine
+import org.softwareanvil.musa.domain.model.SaleLineId
 import org.softwareanvil.musa.domain.model.Tag
 import org.softwareanvil.musa.domain.model.TagColor
 import org.softwareanvil.musa.domain.model.TagId
@@ -106,18 +108,31 @@ fun event(
 	updatedAt = EPOCH,
 )
 
-fun sale(id: String = "s1", variantId: String = "v1", quantity: Int = 1, price: Long = 1000, cost: Long = 300) = Sale(
+fun sale(
+	id: String = "s1",
+	variantId: String = "v1",
+	quantity: Int = 1,
+	price: Long = 1000,
+	cost: Long = 300,
+	eventId: String? = "e1",
+	channel: SaleChannel = if (eventId != null) SaleChannel.EVENT else SaleChannel.ONLINE_SHOP,
+	soldAt: Instant = EPOCH,
+	shippingCharged: Long = 0,
+	shippingCost: Long = 0,
+) = Sale(
 	id = SaleId(id),
-	variantId = VariantId(variantId),
-	productName = "Lámina gato",
-	variantName = "",
-	quantity = quantity,
-	unitPrice = Money(price),
-	unitCost = Money(cost),
-	channel = SaleChannel.EVENT,
-	eventId = EventId("e1"),
-	soldAt = EPOCH,
+	channel = channel,
+	eventId = eventId?.let(::EventId),
+	customer = "",
+	note = "",
+	lines = listOf(saleLine("$id-l1", variantId, quantity, price, cost)),
+	shippingCharged = Money(shippingCharged),
+	shippingCost = Money(shippingCost),
+	soldAt = soldAt,
 )
+
+fun saleLine(id: String = "l1", variantId: String = "v1", quantity: Int = 1, price: Long = 1000, cost: Long = 300) =
+	SaleLine(SaleLineId(id), VariantId(variantId), "Lámina gato", "", quantity, Money(price), Money(cost))
 
 fun expense(id: String = "x1", concept: String = "Stand", amount: Long = 5000) =
 	EventExpense(ExpenseId(id), EventId("e1"), concept, Money(amount), EPOCH)

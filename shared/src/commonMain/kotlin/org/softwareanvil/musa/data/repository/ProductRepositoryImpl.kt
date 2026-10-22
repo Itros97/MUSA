@@ -46,6 +46,13 @@ class ProductRepositoryImpl(
 		)
 	}
 
+	override suspend fun findByVariant(variantId: VariantId): Product? {
+		val productId = withContext(dispatcher) {
+			database.productVariantQueries.selectProductId(variantId.value).executeAsOneOrNull()
+		} ?: return null
+		return findById(ProductId(productId))
+	}
+
 	override suspend fun findSkuOwnerName(sku: String, excluding: ProductId): String? = withContext(dispatcher) {
 		database.physicalVariantQueries.selectSkuOwnerName(sku, excluding.value).executeAsOneOrNull()
 	}

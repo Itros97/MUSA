@@ -32,8 +32,9 @@ fun SalesSection(sales: List<Sale>, isOpen: Boolean, onUndo: (SaleId) -> Unit) {
 		if (sales.isEmpty()) EmptyLine("Todavía no has vendido nada aquí.")
 		sales.forEach { sale ->
 			ItemRow(
-				title = "${sale.quantity} × ${itemLabel(sale.productName, sale.variantName)}",
-				detail = "${soldAtLabel(sale)} · ${MoneyFormatter.format(sale.unitPrice)} c/u",
+				title = sale.lines.joinToString { "${it.quantity} × ${itemLabel(it.productName, it.variantName)}" },
+				detail = listOfNotNull(soldAtLabel(sale), sale.lines.singleOrNull()?.let { "${MoneyFormatter.format(it.unitPrice)} c/u" })
+					.joinToString(" · "),
 				amount = MoneyFormatter.format(sale.total),
 			) {
 				if (isOpen) IconButton(onClick = { onUndo(sale.id) }) { Icon(MusaIcons.Undo, contentDescription = "Deshacer venta") }
