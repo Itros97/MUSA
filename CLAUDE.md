@@ -6,7 +6,7 @@ Always work with the `sdd-code` skill: spec → plan → approval → implementa
 
 ## Decisions already taken
 
-- **Stack**: Kotlin Multiplatform + Compose Multiplatform, SQLDelight for storage. Package `org.softwareanvil.io`. Created from the KMP Wizard.
+- **Stack**: Kotlin Multiplatform + Compose Multiplatform, SQLDelight for storage. Package `org.softwareanvil.musa`. Created from the KMP Wizard.
 - **v1 is fully local**: no server, one device per artist, a single user. Data in a local `.db` file with automatic periodic backups.
 - **Later (not v1)**: optional sync with a Kotlin + Spring Boot backend as a modular monolith (not Quarkus). Sync will be last-write-wins with timestamps and client-generated UUIDs, so use UUIDs as ids from the start.
 - **Domain**: `Product` with two kinds, `DigitalProduct` and `PhysicalProduct`.
