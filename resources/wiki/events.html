@@ -1,0 +1,82 @@
+<h1 id="events">Events</h1>
+
+<hr>
+
+<p>The events module tracks a fair or market: what stock goes there, what sells, and what the day really earned once costs and expenses are paid.</p>
+
+<h2 id="an-event">An event</h2>
+
+<p>An event has a name, a place, a start date and an end date. It is <strong>open</strong> while it can take stock and sales, and <strong>closed</strong> once it is over.</p>
+
+<h2 id="taking-stock">Taking stock</h2>
+
+<p>Stock <strong>moves</strong> from the catalogue to the event. Taking 5 prints lowers the catalogue by 5 and puts them on the event&rsquo;s list.</p>
+
+<ul>
+<li>You cannot take more than the catalogue has.</li>
+<li>While the event is open, the − and + buttons on a line move one unit back to the catalogue or bring one more.</li>
+<li>You can only give back units that were not sold.</li>
+</ul>
+
+<p>Only physical products can be taken to an event.</p>
+
+<h2 id="selling">Selling</h2>
+
+<p>Each line has a <strong>Sell</strong> button. The sale starts at one unit and at the variant&rsquo;s price; both can be changed, for discounts or bundles.</p>
+
+<p>A sale stores the product and variant names, the price and the cost at that moment, so editing the product later does not change past totals. Selling lowers what remains at the event; the catalogue does not change, because those units already left it.</p>
+
+<p>A sale can be undone while the event is open. Its units then count as remaining again.</p>
+
+<h2 id="expenses">Expenses</h2>
+
+<p>Expenses are what attending cost: stand, travel, lodging, food. Each has a concept and an amount.</p>
+
+<h2 id="summary">Summary</h2>
+
+<table>
+<thead>
+<tr>
+<th>Figure</th>
+<th>How it is computed</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>Units sold</td>
+<td>Sum of the quantities of every sale</td>
+</tr>
+
+<tr>
+<td>Gross</td>
+<td>Sum of quantity × price</td>
+</tr>
+
+<tr>
+<td>Cost of goods</td>
+<td>Sum of quantity × cost</td>
+</tr>
+
+<tr>
+<td>Expenses</td>
+<td>Sum of the expenses</td>
+</tr>
+
+<tr>
+<td><strong>Profit</strong></td>
+<td>Gross − cost of goods − expenses</td>
+</tr>
+</tbody>
+</table>
+<p>Profit is negative when the event lost money.</p>
+
+<h2 id="closing-and-deleting">Closing and deleting</h2>
+
+<p>Closing an event returns every unsold unit to the catalogue and makes the event read-only.</p>
+
+<p>An event can only be deleted while it has no sales. Its stock goes back to the catalogue. An event with sales must be closed instead, so the sales are kept.</p>
+
+<h2 id="where-sales-are-stored">Where sales are stored</h2>
+
+<p>Sales go to a table shared by every channel, with the channel set to <code>EVENT</code> and a link to the event. The future sales module will read the same table.</p>

@@ -15,6 +15,15 @@
 ./gradlew :androidApp:installDebug   <span class="c1"># install on a connected Android device or emulator</span>
 </code></pre>
 
+<h2 id="try-it-with-toy-data">Try it with toy data</h2>
+<pre><code class="language-bash">./gradlew :desktopApp:runDemo        <span class="c1"># run the desktop app on a database full of made-up data</span>
+</code></pre>
+
+<p>The demo uses its own file, <code>musa-demo.db</code>, next to the real one. It is deleted and filled again every
+time the demo starts, so you can break things freely. It holds ten products (some low on stock, one sold
+out), an event that closed last month, one happening today and one coming up. Your real <code>musa.db</code> is never
+touched.</p>
+
 <p>For iOS, open <code>iosApp/</code> in Xcode on a Mac and run it from there.</p>
 
 <h2 id="run-the-tests">Run the tests</h2>
@@ -23,7 +32,7 @@
 
 <h2 id="where-the-data-lives">Where the data lives</h2>
 
-<p>The database is a single file called <code>musa.db</code>. On desktop it is stored in the per-user data folder of each system:</p>
+<p>The database is a single file called <code>musa.db</code> (<code>musa-demo.db</code> for the demo). On desktop it is stored in the per-user data folder of each system:</p>
 
 <table>
 <thead>
