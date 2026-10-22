@@ -36,6 +36,7 @@ fun HomeScreen(onOpenSection: (HomeSection) -> Unit, showDevTools: Boolean) {
 				SectionTile(section, onClick = { onOpenSection(section) })
 			}
 			if (showDevTools) item(span = { GridItemSpan(maxLineSpan) }) { DevToolsCard(snackbar, Modifier.padding(top = 12.dp)) }
+			item(span = { GridItemSpan(maxLineSpan) }) { StudioFooter() }
 		}
 	}
 }
